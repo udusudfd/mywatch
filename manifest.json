@@ -1,0 +1,13 @@
+{
+  "name": "MyWatch",
+  "short_name": "MyWatch",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0a0a1a",
+  "theme_color": "#6C5CE7",
+  "icons": [{
+    "src": "https://api.iconify.design/mdi:movie-open.svg?color=%236C5CE7",
+    "sizes": "512x512",
+    "type": "image/svg+xml"
+  }]
+}
