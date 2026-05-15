@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مكتبتي</title>
+<meta name="theme-color" content="#0a0a1a">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,Arial,sans-serif;background:#0a0a1a;color:#fff;min-height:100vh;padding-bottom:70px}
+.pages>div{display:none}.pages>div.active{display:block}
+.btm-nav{position:fixed;bottom:0;left:0;right:0;background:#141428;border-top:1px solid #2a2a4a;display:flex;z-index:90;padding:5px 0}
+.btm-nav div{flex:1;text-align:center;padding:8px 0;cursor:pointer;color:#666;font-size:10px}
+.btm-nav div.active{color:#6C5CE7}
+.btm-nav div span{display:block;font-size:22px;margin-bottom:2px}
+.pad{padding:15px}
+.hero{background:linear-gradient(135deg,#1a1a3e,#0a0a1a);padding:20px 15px;margin-bottom:15px}
+.hero h2{font-size:20px;margin-bottom:15px}
+.row{display:flex;gap:12px;overflow-x:auto;padding-bottom:10px}
+.row::-webkit-scrollbar{display:none}
+.tc{min-width:130px;cursor:pointer;position:relative;border-radius:10px;overflow:hidden;flex-shrink:0}
+.tc img{width:130px;height:195px;object-fit:cover;border-radius:10px;display:block}
+.tc .ti{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.9));padding:8px;font-size:11px;font-weight:bold}
+.tc .tr{position:absolute;top:5px;left:5px;background:rgba(0,0,0,.7);padding:2px 6px;border-radius:5px;font-size:10px;color:#FDCB6E}
+.sbox{display:flex;gap:10px;margin-bottom:15px}
+.sbox input{flex:1;padding:12px;background:#1e1e3a;border:1px solid #2a2a4a;border-radius:10px;color:#fff;font-size:14px}
+.sbox button{padding:12px 18px;background:#6C5CE7;border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:bold}
+.cats{display:flex;gap:8px;overflow-x:auto;margin-bottom:15px;padding-bottom:5px}
+.cats::-webkit-scrollbar{display:none}
+.cat{padding:8px 16px;background:#1e1e3a;border:1px solid #2a2a4a;border-radius:20px;color:#b0b0cc;cursor:pointer;white-space:nowrap;font-size:12px;font-weight:bold}
+.cat.active{background:#6C5CE7;border-color:#6C5CE7;color:#fff}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.card{background:#141428;border:1px solid #2a2a4a;border-radius:10px;overflow:hidden;cursor:pointer;position:relative}
+.card img{width:100%;height:170px;object-fit:cover}
+.card .ni{width:100%;height:170px;background:#1e1e3a;display:flex;align-items:center;justify-content:center;font-size:40px}
+.card .cb{padding:8px}
+.card .ct{font-size:11px;font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card .cm{font-size:10px;color:#888;display:flex;justify-content:space-between;margin-top:4px}
+.card .bd{position:absolute;top:5px;right:5px;padding:2px 6px;border-radius:5px;font-size:9px;font-weight:bold}
+.bm{background:rgba(108,92,231,.9)}.bs{background:rgba(253,121,168,.9)}.ba{background:rgba(0,206,201,.9)}.bk{background:rgba(253,203,110,.9);color:#333}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.9);z-index:100;overflow-y:auto}
+.modal.show{display:block}
+.mc{background:#141428;min-height:100vh;padding:20px;position:relative}
+.mclose{position:fixed;top:15px;left:15px;width:42px;height:42px;background:#E17055;border:none;border-radius:50%;color:#fff;font-size:20px;cursor:pointer;z-index:200;font-weight:bold}
+.mp{width:100%;max-height:350px;object-fit:cover;border-radius:12px;margin-bottom:15px;margin-top:35px}
+.mt{font-size:22px;font-weight:bold;margin-bottom:5px}
+.msub{font-size:13px;color:#888;margin-bottom:10px}
+.mov{font-size:13px;line-height:1.8;color:#ccc;margin-bottom:15px}
+.mdet{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px}
+.md{background:#1e1e3a;padding:10px;border-radius:8px}
+.md small{color:#888;font-size:10px;display:block}
+.md b{font-size:13px}
+.macts{display:flex;gap:8px;margin-bottom:15px;flex-wrap:wrap}
+.mbtn{flex:1;padding:12px;border:none;border-radius:10px;color:#fff;font-weight:bold;font-size:13px;cursor:pointer;min-width:100px}
+.mbadd{background:linear-gradient(135deg,#6C5CE7,#FD79A8)}
+.mbtrl{background:#E17055}
+.mbed{background:#6C5CE7}
+.mbdl{background:#E17055}
+.trail{width:100%;height:220px;border-radius:10px;border:none;margin-bottom:15px}
+.fg{margin-bottom:12px}
+.fl{font-size:12px;color:#888;margin-bottom:5px;display:block;font-weight:bold}
+.fi{width:100%;padding:10px;background:#1e1e3a;border:1px solid #2a2a4a;border-radius:8px;color:#fff;font-size:13px}
+.ft{width:100%;padding:10px;background:#1e1e3a;border:1px solid #2a2a4a;border-radius:8px;color:#fff;font-size:13px;min-height:60px;resize:vertical}
+.sg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.sb{padding:10px 5px;background:#1e1e3a;border:2px solid #2a2a4a;border-radius:8px;color:#fff;text-align:center;cursor:pointer;font-size:11px}
+.sb.active{border-color:#00B894;background:rgba(0,184,148,.15)}
+.stars{display:flex;gap:3px;justify-content:center;direction:ltr;flex-wrap:wrap}
+.star{font-size:24px;cursor:pointer;color:#333}
+.star.active{color:#FDCB6E}
+.savebtn{width:100%;padding:14px;background:linear-gradient(135deg,#00B894,#00CEC9);border:none;border-radius:10px;color:#fff;font-size:15px;font-weight:bold;cursor:pointer;margin-top:8px}
+.mstats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:15px}
+.ms{background:#141428;padding:12px 5px;border-radius:10px;text-align:center;border:1px solid #2a2a4a}
+.ms .n{font-size:20px;font-weight:bold;color:#6C5CE7}
+.ms .l{font-size:9px;color:#888;margin-top:3px}
+.empty{text-align:center;padding:40px 20px;color:#888}
+.stl{font-size:16px;font-weight:bold;margin:15px 0 12px}
+.loading{text-align:center;padding:30px;color:#888}
+.gtags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.gtag{padding:3px 8px;background:#1e1e3a;border-radius:5px;font-size:10px;color:#b0b0cc}
+.cast-row{display:flex;gap:10px;overflow-x:auto;padding-bottom:5px;margin-bottom:15px}
+.cast-row::-webkit-scrollbar{display:none}
+.cc{text-align:center;min-width:70px;flex-shrink:0}
+.cc img{width:60px;height:60px;border-radius:50%;object-fit:cover}
+.cc p{font-size:10px;margin-top:4px;color:#ccc}
+.pbox{background:#141428;padding:15px;border-radius:12px;margin-bottom:10px;border:1px solid #2a2a4a}
+.pbtn{padding:10px 20px;border:none;border-radius:8px;color:#fff;cursor:pointer;font-size:13px;font-weight:bold;background:#6C5CE7}
+.pbtn.danger{background:#E17055}
+</style>
+</head>
+<body>
+  <div class="pages">
+
+<div id="pg-discover" class="active">
+<div class="hero">
+<h2>🔥 الرائج هذا الأسبوع</h2>
+<div class="row" id="trendingRow"><div class="loading">جاري التحميل...</div></div>
+</div>
+<div class="pad">
+<div class="stl">🎬 أفلام شهيرة</div>
+<div class="row" id="newMovies"><div class="loading">جاري التحميل...</div></div>
+<div class="stl">📺 مسلسلات شهيرة</div>
+<div class="row" id="newTV"><div class="loading">جاري التحميل...</div></div>
+<div class="stl">⛩️ أنمي رائج</div>
+<div class="row" id="trendAnime"><div class="loading">جاري التحميل...</div></div>
+<div class="stl">🇰🇷 دراما كورية</div>
+<div class="row" id="trendKdrama"><div class="loading">جاري التحميل...</div></div>
+<div class="stl">🏆 أفلام الأعلى تقييماً</div>
+<div class="row" id="topRated"><div class="loading">جاري التحميل...</div></div>
+<div class="stl">🎞️ قريباً</div>
+<div class="row" id="upcoming"><div class="loading">جاري التحميل...</div></div>
+</div>
+</div>
+
+<div id="pg-search">
+<div class="pad">
+<h2 style="margin-bottom:15px">🔍 بحث</h2>
+<div class="sbox">
+<input type="text" id="searchInput" placeholder="اكتب اسم بالعربي أو الإنجليزي...">
+<button onclick="doSearch()">بحث</button>
+</div>
+<div class="cats" id="searchCats">
+<div class="cat active" onclick="setSearchCat('multi',this)">الكل</div>
+<div class="cat" onclick="setSearchCat('movie',this)">أفلام</div>
+<div class="cat" onclick="setSearchCat('tv',this)">مسلسلات</div>
+</div>
+<div id="searchResults"><div class="empty"><div style="font-size:50px;margin-bottom:10px">🔍</div>ابحث عن أي فيلم أو مسلسل<br><small>مثال: Hunter x Hunter, ون بيس, Breaking Bad</small></div></div>
+</div>
+</div>
+
+<div id="pg-library">
+<div class="pad">
+<h2 style="margin-bottom:15px">📚 مكتبتي</h2>
+<div class="mstats" id="myStats"></div>
+<div class="cats" id="libCats">
+<div class="cat active" onclick="setLibCat('all',this)">📚 الكل</div>
+<div class="cat" onclick="setLibCat('movie',this)">🎬 أفلام</div>
+<div class="cat" onclick="setLibCat('series',this)">📺 مسلسلات</div>
+<div class="cat" onclick="setLibCat('anime',this)">⛩️ أنمي</div>
+<div class="cat" onclick="setLibCat('kdrama',this)">🇰🇷 كورية</div>
+</div>
+<div class="cats" id="libStatus">
+<div class="cat active" onclick="setLibStatus('all',this)">الكل</div>
+<div class="cat" onclick="setLibStatus('watched',this)">✅ شاهدت</div>
+<div class="cat" onclick="setLibStatus('watching',this)">▶️ أشاهد</div>
+<div class="cat" onclick="setLibStatus('plan',this)">📋 خطة</div>
+<div class="cat" onclick="setLibStatus('onhold',this)">⏸️ متوقف</div>
+<div class="cat" onclick="setLibStatus('dropped',this)">❌ متروك</div>
+</div>
+<div id="libContent"></div>
+</div>
+</div>
+
+<div id="pg-profile">
+<div class="pad">
+<h2 style="margin-bottom:15px">👤 حسابي</h2>
+<div class="mstats" id="profileStats"></div>
+<div class="pbox">
+<b>📤 تصدير البيانات</b>
+<p style="font-size:12px;color:#888;margin:8px 0">احفظ نسخة احتياطية من مكتبتك</p>
+<button class="pbtn" onclick="exportData()">تصدير JSON</button>
+</div>
+<div class="pbox">
+<b>📥 استيراد البيانات</b>
+<p style="font-size:12px;color:#888;margin:8px 0">استعادة نسخة احتياطية</p>
+<input type="file" accept=".json" onchange="importData(event)" style="font-size:12px;color:#ccc">
+</div>
+<div class="pbox">
+<b>🗑️ حذف كل البيانات</b>
+<p style="font-size:12px;color:#888;margin:8px 0">تحذير: لا يمكن التراجع!</p>
+<button class="pbtn danger" onclick="deleteAll()">حذف الكل</button>
+</div>
+<div class="pbox">
+<b>ℹ️ عن التطبيق</b>
+<p style="font-size:12px;color:#888;margin:8px 0">MyWatch - مكتبتك الشخصية للأفلام والمسلسلات والأنمي والدراما الكورية</p>
+<p style="font-size:12px;color:#888">البيانات من TMDB</p>
+</div>
+</div>
+</div>
+
+</div>
+
+<div class="btm-nav">
+<div class="active" onclick="goPage('discover',this)"><span>🏠</span>اكتشف</div>
+<div onclick="goPage('search',this)"><span>🔍</span>بحث</div>
+<div onclick="goPage('library',this)"><span>📚</span>مكتبتي</div>
+<div onclick="goPage('profile',this)"><span>👤</span>حسابي</div>
+</div>
+
+<div class="modal" id="tmdbModal">
+<div class="mc" id="tmdbDetail"></div>
+</div>
+
+<div class="modal" id="addLibModal">
+<div class="mc">
+<button class="mclose" onclick="closeM('addLibModal')">✕</button>
+<h3 style="margin-bottom:15px;padding-top:35px" id="addLibTitle">إضافة للمكتبة</h3>
+<input type="hidden" id="addLibData">
+<div class="fg">
+<label class="fl">النوع</label>
+<div class="sg" id="addTypeGrid">
+<div class="sb" onclick="pickAddType('movie',this)">🎬 فيلم</div>
+<div class="sb" onclick="pickAddType('series',this)">📺 مسلسل</div>
+<div class="sb" onclick="pickAddType('anime',this)">⛩️ أنمي</div>
+<div class="sb" onclick="pickAddType('kdrama',this)">🇰🇷 كورية</div>
+</div>
+</div>
+<div class="fg">
+<label class="fl">الحالة</label>
+<div class="sg" id="addStatusGrid">
+<div class="sb" onclick="pickAddStatus('watched',this)">✅ شاهدت</div>
+<div class="sb" onclick="pickAddStatus('watching',this)">▶️ أشاهد</div>
+<div class="sb" onclick="pickAddStatus('plan',this)">📋 خطة</div>
+<div class="sb" onclick="pickAddStatus('onhold',this)">⏸️ متوقف</div>
+<div class="sb" onclick="pickAddStatus('dropped',this)">❌ متروك</div>
+</div>
+</div>
+<div class="fg">
+<label class="fl">التقييم</label>
+<div class="stars" id="addStars">
+<span class="star" onclick="pickAddRate(1)">★</span>
+<span class="star" onclick="pickAddRate(2)">★</span>
+<span class="star" onclick="pickAddRate(3)">★</span>
+<span class="star" onclick="pickAddRate(4)">★</span>
+<span class="star" onclick="pickAddRate(5)">★</span>
+<span class="star" onclick="pickAddRate(6)">★</span>
+<span class="star" onclick="pickAddRate(7)">★</span>
+<span class="star" onclick="pickAddRate(8)">★</span>
+<span class="star" onclick="pickAddRate(9)">★</span>
+<span class="star" onclick="pickAddRate(10)">★</span>
+</div>
+</div>
+<div class="fg">
+<label class="fl">ملاحظات</label>
+<textarea class="ft" id="addNotes" placeholder="رأيك..."></textarea>
+</div>
+<button class="savebtn" onclick="saveToLib()">💾 حفظ في المكتبة</button>
+</div>
+</div>
+
+<div class="modal" id="libDetailModal">
+<div class="mc" id="libDetailContent"></div>
+</div>
+<script>
+const API_KEY='97583a1ff06d572ceb8d4672f269cd6b';
+const BASE='https://api.themoviedb.org/3';
+const IMG='https://image.tmdb.org/t/p/w500';
+const IMG_SM='https://image.tmdb.org/t/p/w300';
+
+let lib=JSON.parse(localStorage.getItem('lib')||'[]');
+let addType='',addStatus='',addRate=0;
+let searchCat='multi';
+let libCat='all',libStat='all';
+
+function saveLib(){localStorage.setItem('lib',JSON.stringify(lib))}
+
+async function tmdbFetch(path,lang){
+  lang=lang||'ar';
+  try{
+    const sep=path.includes('?')?'&':'?';
+    const url=BASE+path+sep+'api_key='+API_KEY+'&language='+lang+'&include_adult=false';
+    const r=await fetch(url);
+    return await r.json();
+  }catch(e){console.error(e);return{results:[]}}
+}
+
+function goPage(p,el){
+  document.querySelectorAll('.pages>div').forEach(x=>x.classList.remove('active'));
+  document.getElementById('pg-'+p).classList.add('active');
+  document.querySelectorAll('.btm-nav div').forEach(x=>x.classList.remove('active'));
+  el.classList.add('active');
+  if(p==='library')renderLib();
+  if(p==='profile')renderProfile();
+  window.scrollTo(0,0);
+}
+
+function renderRow(data,container,mediaType){
+  const c=document.getElementById(container);
+  if(!data||!data.results||!data.results.length){c.innerHTML='<p style="color:#888;padding:10px">لا توجد نتائج</p>';return}
+  c.innerHTML=data.results.slice(0,15).map(m=>{
+    const title=m.title||m.name||'بدون عنوان';
+    const poster=m.poster_path?IMG_SM+m.poster_path:'';
+    const type=mediaType||m.media_type||'movie';
+    const rate=m.vote_average?m.vote_average.toFixed(1):'';
+    return '<div class="tc" onclick="showTMDB('+m.id+',\''+type+'\')">'+
+    (poster?'<img src="'+poster+'" alt="">':'<div style="width:130px;height:195px;background:#1e1e3a;display:flex;align-items:center;justify-content:center;border-radius:10px;font-size:40px">🎬</div>')+
+    (rate?'<div class="tr">⭐'+rate+'</div>':'')+
+    '<div class="ti">'+title+'</div></div>';
+  }).join('');
+}
+
+async function loadDiscover(){
+  try {
+    const trending=await tmdbFetch('/trending/all/week');
+    renderRow(trending,'trendingRow');
+    const movies=await tmdbFetch('/movie/popular?page=1');
+    renderRow(movies,'newMovies','movie');
+    const tv=await tmdbFetch('/tv/popular?page=1');
+    renderRow(tv,'newTV','tv');
+    const anime=await tmdbFetch('/discover/tv?with_genres=16&with_original_language=ja&sort_by=popularity.desc');
+    renderRow(anime,'trendAnime','tv');
+    const kdrama=await tmdbFetch('/discover/tv?with_original_language=ko&sort_by=popularity.desc');
+    renderRow(kdrama,'trendKdrama','tv');
+    const top=await tmdbFetch('/movie/top_rated');
+    renderRow(top,'topRated','movie');
+    const up=await tmdbFetch('/movie/upcoming');
+    renderRow(up,'upcoming','movie');
+  } catch(e){
+    console.error('Discover error:',e);
+  }
+}
+
+async function showTMDB(id,type){
+  const modal=document.getElementById('tmdbModal');
+  const cont=document.getElementById('tmdbDetail');
+  cont.innerHTML='<button class="mclose" onclick="closeM(\'tmdbModal\')">✕</button><div class="loading" style="padding-top:80px">جاري التحميل...</div>';
+  modal.classList.add('show');
+  
+  const mtype=(type==='movie')?'movie':'tv';
+  
+  let detail=await tmdbFetch('/'+mtype+'/'+id,'ar');
+  if(!detail.overview||detail.overview.length<10){
+    const enDetail=await tmdbFetch('/'+mtype+'/'+id,'en-US');
+    if(enDetail.overview)detail.overview=enDetail.overview;
+  }
+  
+  const credits=await tmdbFetch('/'+mtype+'/'+id+'/credits');
+  const videos=await tmdbFetch('/'+mtype+'/'+id+'/videos','en-US');
+  const similar=await tmdbFetch('/'+mtype+'/'+id+'/similar');
+  
+  const title=detail.title||detail.name||'بدون عنوان';
+  const orig=detail.original_title||detail.original_name||'';
+  const poster=detail.poster_path?IMG+detail.poster_path:'';
+  const overview=detail.overview||'لا يوجد وصف متاح';
+  const rate=detail.vote_average?detail.vote_average.toFixed(1):'';
+  const year=(detail.release_date||detail.first_air_date||'').split('-')[0];
+  const genres=(detail.genres||[]).map(g=>g.name);
+  const runtime=detail.runtime||(detail.episode_run_time&&detail.episode_run_time[0])||'';
+  const seasons=detail.number_of_seasons||'';
+  const episodes=detail.number_of_episodes||'';
+  
+  const trailer=(videos.results||[]).find(v=>v.type==='Trailer'&&v.site==='YouTube')||(videos.results||[]).find(v=>v.site==='YouTube');
+  const cast=(credits.cast||[]).slice(0,10);
+  
+  const inLib=lib.find(l=>l.tmdbId==id);
+  
+  let html='<button class="mclose" onclick="closeM(\'tmdbModal\')">✕</button>';
+  if(poster)html+='<img class="mp" src="'+poster+'">';
+  else html+='<div style="height:50px"></div>';
+  html+='<div class="mt">'+title+'</div>';
+  if(orig&&orig!==title)html+='<div class="msub">'+orig+'</div>';
+  
+  if(genres.length)html+='<div class="gtags">'+genres.map(g=>'<span class="gtag">'+g+'</span>').join('')+'</div>';
+  
+  html+='<div class="mdet">';
+  if(rate)html+='<div class="md"><small>التقييم</small><b>⭐ '+rate+'/10</b></div>';
+  if(year)html+='<div class="md"><small>السنة</small><b>'+year+'</b></div>';
+  if(runtime)html+='<div class="md"><small>المدة</small><b>'+runtime+' دقيقة</b></div>';
+  if(seasons)html+='<div class="md"><small>المواسم</small><b>'+seasons+'</b></div>';
+  if(episodes)html+='<div class="md"><small>الحلقات</small><b>'+episodes+'</b></div>';
+  html+='<div class="md"><small>النوع</small><b>'+(mtype==='movie'?'فيلم':'مسلسل')+'</b></div>';
+  html+='</div>';
+  
+  html+='<div class="macts">';
+  if(inLib){
+    html+='<button class="mbtn mbed" onclick="closeM(\'tmdbModal\');setTimeout(()=>showLibDetail(\''+inLib.id+'\'),300)">✏️ في مكتبتي</button>';
+  }else{
+    window._tmdbCurrent={id:id,mtype:mtype,title:title,poster:poster,year:year,genres:genres};
+    html+='<button class="mbtn mbadd" onclick="openAddLibFromCurrent()">➕ أضف للمكتبة</button>';
+  }
+  if(trailer)html+='<button class="mbtn mbtrl" onclick="document.getElementById(\'trailerFrame\').style.display=\'block\';this.style.display=\'none\'">▶️ شاهد التريلر</button>';
+  html+='</div>';
+  
+  if(trailer)html+='<iframe class="trail" id="trailerFrame" style="display:none" src="https://www.youtube.com/embed/'+trailer.key+'" allowfullscreen></iframe>';
+  
+  html+='<div class="mov">'+overview+'</div>';
+  
+  if(cast.length){
+    html+='<div class="stl">🎭 الممثلين</div><div class="cast-row">';
+    cast.forEach(c=>{
+      const cimg=c.profile_path?IMG_SM+c.profile_path:'';
+      html+='<div class="cc">'+(cimg?'<img src="'+cimg+'">':'<div style="width:60px;height:60px;border-radius:50%;background:#1e1e3a;display:flex;align-items:center;justify-content:center;margin:0 auto">👤</div>')+'<p>'+c.name+'</p></div>';
+    });
+    html+='</div>';
+  }
+  
+  if(similar.results&&similar.results.length){
+    html+='<div class="stl">🎬 أعمال مشابهة</div><div class="row">';
+    similar.results.slice(0,10).forEach(s=>{
+      const sp=s.poster_path?IMG_SM+s.poster_path:'';
+      html+='<div class="tc" onclick="closeM(\'tmdbModal\');setTimeout(()=>showTMDB('+s.id+',\''+mtype+'\'),300)">'+
+      (sp?'<img src="'+sp+'">':'<div style="width:130px;height:195px;background:#1e1e3a;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:30px">🎬</div>')+
+      '<div class="ti">'+(s.title||s.name||'')+'</div></div>';
+    });
+    html+='</div>';
+  }
+  
+  cont.innerHTML=html;
+  modal.scrollTop=0;
+}
+
+function setSearchCat(c,el){
+  searchCat=c;
+  document.querySelectorAll('#searchCats .cat').forEach(x=>x.classList.remove('active'));
+  el.classList.add('active');
+  const inp=document.getElementById('searchInput');
+  if(inp.value.trim())doSearch();
+}
+
+async function doSearch(){
+  const q=document.getElementById('searchInput').value.trim();
+  if(!q){alert('اكتب اسم للبحث');return}
+  const r=document.getElementById('searchResults');
+  r.innerHTML='<div class="loading">جاري البحث...</div>';
+  
+  try{
+    const url1=BASE+'/search/'+searchCat+'?api_key='+API_KEY+'&language=ar&query='+encodeURIComponent(q)+'&include_adult=false';
+    const url2=BASE+'/search/'+searchCat+'?api_key='+API_KEY+'&language=en-US&query='+encodeURIComponent(q)+'&include_adult=false';
+    
+    const responses=await Promise.all([
+      fetch(url1).then(x=>x.json()).catch(()=>({results:[]})),
+      fetch(url2).then(x=>x.json()).catch(()=>({results:[]}))
+    ]);
+    
+    const seen=new Set();
+    const merged=[];
+    [...(responses[0].results||[]),...(responses[1].results||[])].forEach(m=>{
+      if(!seen.has(m.id)&&(m.poster_path||m.title||m.name)){
+        seen.add(m.id);
+        merged.push(m);
+      }
+    });
+    
+    if(!merged.length){
+      r.innerHTML='<div class="empty"><div style="font-size:50px">😕</div><p>لا توجد نتائج لـ "'+q+'"</p><small>جرب اسم آخر أو تأكد من الإملاء</small></div>';
+      return;
+    }
+    
+    let html='<div class="grid">';
+    merged.forEach(m=>{
+      const t=m.media_type||(searchCat==='movie'?'movie':searchCat==='tv'?'tv':'movie');
+      const mtype=(t==='movie')?'movie':'tv';
+      html+='<div class="card" onclick="showTMDB('+m.id+',\''+mtype+'\')">'+
+      (m.poster_path?'<img src="'+IMG_SM+m.poster_path+'">':'<div class="ni">🎬</div>')+
+      '<div class="cb"><div class="ct">'+(m.title||m.name||'')+'</div>'+
+      '<div class="cm"><span>'+(m.release_date||m.first_air_date||'').split('-')[0]+'</span><span>⭐'+(m.vote_average||0).toFixed(1)+'</span></div></div></div>';
+    });
+    html+='</div>';
+    r.innerHTML=html;
+  }catch(e){
+    r.innerHTML='<div class="empty">حدث خطأ في البحث. تحقق من الإنترنت</div>';
+  }
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  const inp=document.getElementById('searchInput');
+  if(inp)inp.addEventListener('keydown',e=>{if(e.key==='Enter')doSearch()});
+});
+
+function openAddLibFromCurrent(){
+  const c=window._tmdbCurrent;
+  if(!c)return;
+  closeM('tmdbModal');
+  setTimeout(()=>{
+    document.getElementById('addLibTitle').textContent='إضافة: '+c.title;
+    document.getElementById('addLibData').value=JSON.stringify(c);
+    addType=c.mtype==='movie'?'movie':'series';
+    addStatus='';addRate=0;
+    const types=['movie','series','anime','kdrama'];
+    document.querySelectorAll('#addTypeGrid .sb').forEach((x,i)=>{
+      x.classList.remove('active');
+      if(types[i]===addType)x.classList.add('active');
+    });
+    document.querySelectorAll('#addStatusGrid .sb').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('#addStars .star').forEach(x=>x.classList.remove('active'));
+    document.getElementById('addNotes').value='';
+    document.getElementById('addLibModal').classList.add('show');
+  },200);
+}
+
+function pickAddType(t,el){addType=t;document.querySelectorAll('#addTypeGrid .sb').forEach(x=>x.classList.remove('active'));el.classList.add('active')}
+function pickAddStatus(s,el){addStatus=s;document.querySelectorAll('#addStatusGrid .sb').forEach(x=>x.classList.remove('active'));el.classList.add('active')}
+function pickAddRate(r){addRate=r;document.querySelectorAll('#addStars .star').forEach((s,i)=>s.classList.toggle('active',i<r))}
+
+function saveToLib(){
+  if(!addType){alert('اختر النوع');return}
+  const d=JSON.parse(document.getElementById('addLibData').value);
+  const item={
+    id:Date.now().toString(),
+    tmdbId:d.id,
+    type:addType,
+    title:d.title,
+    poster:d.poster,
+    year:d.year,
+    genres:d.genres,
+    status:addStatus,
+    rating:addRate,
+    notes:document.getElementById('addNotes').value,
+    date:Date.now()
+  };
+  lib.push(item);
+  saveLib();
+  closeM('addLibModal');
+  alert('✅ تمت الإضافة إلى مكتبتك!');
+}
+
+function setLibCat(c,el){libCat=c;document.querySelectorAll('#libCats .cat').forEach(x=>x.classList.remove('active'));el.classList.add('active');renderLib()}
+function setLibStatus(s,el){libStat=s;document.querySelectorAll('#libStatus .cat').forEach(x=>x.classList.remove('active'));el.classList.add('active');renderLib()}
+
+function renderLib(){
+  let items=lib.filter(i=>{
+    if(libCat!=='all'&&i.type!==libCat)return false;
+    if(libStat!=='all'&&i.status!==libStat)return false;
+    return true;
+  }).sort((a,b)=>(b.date||0)-(a.date||0));
+  
+  document.getElementById('myStats').innerHTML=
+    '<div class="ms"><div class="n">'+lib.length+'</div><div class="l">المجموع</div></div>'+
+    '<div class="ms"><div class="n">'+lib.filter(i=>i.type==='movie').length+'</div><div class="l">أفلام</div></div>'+
+    '<div class="ms"><div class="n">'+lib.filter(i=>i.type==='anime').length+'</div><div class="l">أنمي</div></div>'+
+    '<div class="ms"><div class="n">'+lib.filter(i=>i.status==='watched').length+'</div><div class="l">شاهدت</div></div>';
+  
+  const c=document.getElementById('libContent');
+  if(!items.length){
+    c.innerHTML='<div class="empty"><div style="font-size:50px;margin-bottom:10px">📭</div>لا يوجد محتوى<br><small>اذهب لصفحة "اكتشف" أو "بحث" لإضافة أعمال</small></div>';
+    return;
+  }
+  
+  const tn={movie:'فيلم',series:'مسلسل',anime:'أنمي',kdrama:'كورية'};
+  const sn={watched:'✅',watching:'▶️',plan:'📋',onhold:'⏸️',dropped:'❌'};
+  const cls={movie:'bm',series:'bs',anime:'ba',kdrama:'bk'};
+  
+  let html='<div class="grid">';
+  items.forEach(i=>{
+    html+='<div class="card" onclick="showLibDetail(\''+i.id+'\')">'+
+    (i.poster?'<img src="'+i.poster+'">':'<div class="ni">🎬</div>')+
+    '<div class="bd '+cls[i.type]+'">'+(tn[i.type]||i.type)+'</div>'+
+    '<div class="cb"><div class="ct">'+i.title+'</div>'+
+    '<div class="cm"><span>'+(sn[i.status]||'')+' '+(i.year||'')+'</span>'+
+    (i.rating?'<span style="color:#FDCB6E">⭐'+i.rating+'</span>':'')+'</div></div></div>';
+  });
+  html+='</div>';
+  c.innerHTML=html;
+}
+
+function showLibDetail(id){
+  const i=lib.find(x=>x.id===id);
+  if(!i)return;
+  const tn={movie:'فيلم',series:'مسلسل',anime:'أنمي',kdrama:'دراما كورية'};
+  const sn={watched:'تمت المشاهدة',watching:'أشاهد حالياً',plan:'خطة مشاهدة',onhold:'متوقف',dropped:'متروك'};
+  
+  let stars='';
+  for(let idx=0;idx<10;idx++){
+    stars+='<span class="star '+(idx<(i.rating||0)?'active':'')+'" style="cursor:default;font-size:20px">★</span>';
+  }
+  
+  let html='<button class="mclose" onclick="closeM(\'libDetailModal\')">✕</button>';
+  if(i.poster)html+='<img class="mp" src="'+i.poster+'">';
+  else html+='<div style="height:50px"></div>';
+  html+='<div class="mt">'+i.title+'</div>';
+  html+='<div class="mdet">';
+  html+='<div class="md"><small>النوع</small><b>'+(tn[i.type]||i.type)+'</b></div>';
+  if(i.status)html+='<div class="md"><small>الحالة</small><b>'+(sn[i.status]||i.status)+'</b></div>';
+  if(i.year)html+='<div class="md"><small>السنة</small><b>'+i.year+'</b></div>';
+  if(i.rating)html+='<div class="md"><small>التقييم</small><b>⭐ '+i.rating+'/10</b></div>';
+  html+='</div>';
+  if(i.rating)html+='<div class="stars" style="justify-content:flex-start;margin-bottom:15px">'+stars+'</div>';
+  if(i.notes)html+='<div style="background:#1e1e3a;padding:12px;border-radius:10px;margin-bottom:15px"><b style="font-size:12px;color:#888">ملاحظاتي:</b><p style="font-size:13px;margin-top:5px;line-height:1.7">'+i.notes+'</p></div>';
+  if(i.tmdbId)html+='<button class="mbtn mbadd" style="width:100%;margin-bottom:10px" onclick="closeM(\'libDetailModal\');setTimeout(()=>showTMDB('+i.tmdbId+',\''+(i.type==='movie'?'movie':'tv')+'\'),300)">🔍 عرض التفاصيل الكاملة</button>';
+  html+='<div class="macts">';
+  html+='<button class="mbtn mbed" onclick="editLibItem(\''+i.id+'\')">✏️ تعديل</button>';
+  html+='<button class="mbtn mbdl" onclick="delLibItem(\''+i.id+'\')">🗑️ حذف</button>';
+  html+='</div>';
+  
+  document.getElementById('libDetailContent').innerHTML=html;
+  document.getElementById('libDetailModal').classList.add('show');
+}
+
+function editLibItem(id){
+  const i=lib.find(x=>x.id===id);
+  if(!i)return;
+  closeM('libDetailModal');
+  setTimeout(()=>{
+    document.getElementById('addLibTitle').textContent='تعديل: '+i.title;
+    document.getElementById('addLibData').value=JSON.stringify({id:i.tmdbId,mtype:i.type==='movie'?'movie':'tv',title:i.title,poster:i.poster,year:i.year,genres:i.genres});
+    addType=i.type;addStatus=i.status||'';addRate=i.rating||0;
+    const types=['movie','series','anime','kdrama'];
+    document.querySelectorAll('#addTypeGrid .sb').forEach((x,idx)=>x.classList.toggle('active',types[idx]===addType));
+    const statuses=['watched','watching','plan','onhold','dropped'];
+    document.querySelectorAll('#addStatusGrid .sb').forEach((x,idx)=>x.classList.toggle('active',statuses[idx]===addStatus));
+    document.querySelectorAll('#addStars .star').forEach((s,idx)=>s.classList.toggle('active',idx<addRate));
+    document.getElementById('addNotes').value=i.notes||'';
+    lib=lib.filter(x=>x.id!==id);
+    document.getElementById('addLibModal').classList.add('show');
+  },200);
+}
+
+function delLibItem(id){
+  if(confirm('هل أنت متأكد من الحذف؟')){
+    lib=lib.filter(x=>x.id!==id);
+    saveLib();
+    closeM('libDetailModal');
+    renderLib();
+  }
+}
+
+function renderProfile(){
+  document.getElementById('profileStats').innerHTML=
+    '<div class="ms"><div class="n">'+lib.length+'</div><div class="l">المجموع</div></div>'+
+    '<div class="ms"><div class="n">'+lib.filter(i=>i.type==='movie').length+'</div><div class="l">أفلام</div></div>'+
+    '<div class="ms"><div class="n">'+lib.filter(i=>i.type==='series'||i.type==='kdrama').length+'</div><div class="l">مسلسلات</div></div>'+
+    '<div class="ms"><div class="n">'+lib.filter(i=>i.type==='anime').length+'</div><div class="l">أنمي</div></div>';
+}
+
+function exportData(){
+  if(!lib.length){alert('المكتبة فارغة!');return}
+  const blob=new Blob([JSON.stringify(lib,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='mywatch_'+new Date().toISOString().split('T')[0]+'.json';
+  a.click();
+}
+
+function importData(e){
+  const f=e.target.files[0];
+  if(!f)return;
+  const r=new FileReader();
+  r.onload=function(ev){
+    try{
+      const d=JSON.parse(ev.target.result);
+      if(Array.isArray(d)){
+        if(confirm('إضافة '+d.length+' عنصر للمكتبة؟')){
+          lib=[...lib,...d];
+          saveLib();
+          alert('✅ تم الاستيراد!');
+          renderLib();
+        }
+      }
+    }catch(er){alert('خطأ في الملف')}
+  };
+  r.readAsText(f);
+}
+
+function deleteAll(){
+  if(confirm('هل أنت متأكد من حذف كل البيانات؟ لا يمكن التراجع!')){
+    if(confirm('تأكيد أخير: حذف كل شيء؟')){
+      localStorage.removeItem('lib');
+      lib=[];
+      renderLib();
+      renderProfile();
+      alert('تم الحذف');
+    }
+  }
+}
+
+function closeM(id){
+  document.getElementById(id).classList.remove('show');
+  const iframe=document.querySelector('#'+id+' iframe');
+  if(iframe){const src=iframe.src;iframe.src='';setTimeout(()=>{iframe.src=src},10)}
+}
+
+loadDiscover();
+</script>
+</body>
+</html>
